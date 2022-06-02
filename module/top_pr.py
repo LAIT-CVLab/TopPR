@@ -110,7 +110,7 @@ def confband_est(data, h, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .
 ############################################################
 ############### Band Width estimator H0 & H1 ###############
 ############################################################
-def bandwidth_est(data, bandwidth_list, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False):
+def bandwidth_est(data, bandwidth_list, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False, multiprocess=False):
     # non-compact kernel list = {'gaussian','exponential'} | compact kernel list = {'tophat','epanechnikov','linear','cosine'}
     import numpy as np
     from sklearn.neighbors import KernelDensity
@@ -192,7 +192,7 @@ def bandwidth_est(data, bandwidth_list, kernel = 'cosine', grid = 0, grid_num = 
 ############################################################
 ################## Band Width estimator H0 #################
 ############################################################
-def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False):
+def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False, multiprocess=False):
     # non-compact kernel list = {'gaussian','exponential'} | compact kernel list = {'tophat','epanechnikov','linear','cosine'}
     import numpy as np
     from tqdm import tqdm
@@ -264,7 +264,7 @@ def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'co
 ############################################################
 ################## Band Width estimator H1 #################
 ############################################################
-def bandwidth_est_h1(data, bandwidth_list, confidence_band = False, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False):
+def bandwidth_est_h1(data, bandwidth_list, confidence_band = False, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False, multiprocess=False):
     # non-compact kernel list = {'gaussian','exponential'} | compact kernel list = {'tophat','epanechnikov','linear','cosine'}
     import numpy as np
     from tqdm import tqdm
@@ -352,10 +352,10 @@ def top_pr(real_features, fake_features, bandwidth_list, homology = 0, kernel = 
     # find optimal bandwidth and corresponding confidence band
     if (homology == 0):
         bandwidth, conf_band= bandwidth_est_h0(data = real_features, bandwidth_list = bandwidth_list, 
-            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False)
+            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False, multiprocess=multiprocess)
     elif (homology == 1):
         bandwidth, conf_band= bandwidth_est_h1(data = real_features, bandwidth_list = bandwidth_list, 
-            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False)
+            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False, multiprocess=multiprocess)
 
     # estimation of manifold
     KDE = KernelDensity(kernel = 'gaussian', bandwidth = bandwidth)    
@@ -424,14 +424,14 @@ def top_pr_rf(real_features, fake_features, bandwidth_list, homology = 0, kernel
     # find optimal bandwidth and corresponding confidence band
     if (homology == 0):
         bandwidth_r, conf_band_r = bandwidth_est_h0(data = real_features, bandwidth_list = bandwidth_list, 
-            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False)
+            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False, multiprocess=multiprocess)
         bandwidth_g, conf_band_g = bandwidth_est_h0(data = fake_features, bandwidth_list = bandwidth_list, 
-            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False)
+            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False, multiprocess=multiprocess)
     elif (homology == 1):
         bandwidth_r, conf_band_r = bandwidth_est_h1(data = real_features, bandwidth_list = bandwidth_list, 
-            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False)
+            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False, multiprocess=multiprocess)
         bandwidth_g, conf_band_g = bandwidth_est_h1(data = fake_features, bandwidth_list = bandwidth_list, 
-            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False)
+            confidence_band = True, kernel = kernel, grid = 0, grid_num = grid_num, alpha = alpha, Plot = False, multiprocess=multiprocess)
 
     # estimation of manifold  
     KDE_r = KernelDensity(kernel = 'gaussian', bandwidth = bandwidth_r).fit(real_features)
