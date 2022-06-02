@@ -60,7 +60,7 @@ def set_grid(data, grid_num = 100):
 ############################################################
 ##################### Confidence Band ######################
 ############################################################
-def confband_est(data, h, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, repeat = 100, isnumpy = False, prob_est = False, , multiprocess=False):
+def confband_est(data, h, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, repeat = 100, isnumpy = False, prob_est = False, multiprocess=False):
     # Set "p_hat = True" to return the estimated p_hat
     # Set "isnumpy = True" to return the not to transform the data into numpy
     # !!! We implement "p_hat" and "isnumpy" options for using this function in Bandwidth Estimator !!! #
@@ -156,7 +156,7 @@ def bandwidth_est(data, bandwidth_list, kernel = 'cosine', grid = 0, grid_num = 
     s_h1 = np.array([])
     for h in tqdm(bandwidth_list):
         # confidence band & p_hat
-        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True)
+        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True, multiprocess=multiprocess)
 
         # find significant homology
         PD = gudhi.CubicalComplex(dimensions = [round(len(grid)**(1/grid.shape[1])),round(len(grid)**(1/grid.shape[1]))],
@@ -246,7 +246,7 @@ def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'co
     cn_list = np.array([])
     for h in tqdm(bandwidth_list):
         # confidence band & p_hat
-        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True)
+        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True, multiprocess=multiprocess)
         cn_list = np.append(cn_list, cn)
 
         # find significant homology
@@ -326,7 +326,7 @@ def bandwidth_est_h1(data, bandwidth_list, confidence_band = False, kernel = 'co
     cn_list = np.array([])
     for h in tqdm(bandwidth_list):
         # confidence band & p_hat
-        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True)
+        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True, multiprocess=multiprocess)
         cn_list = np.append(cn_list, cn)
 
         # find significant homology
