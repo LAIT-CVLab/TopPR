@@ -66,7 +66,7 @@ def confband_est(data, h, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .
     # !!! We implement "p_hat" and "isnumpy" options for using this function in Bandwidth Estimator !!! #
     import numpy as np
     from sklearn.neighbors import KernelDensity
-    import torch
+
 
     # data as numpy array
     if not isinstance(data, np.ndarray):
@@ -195,12 +195,9 @@ def bandwidth_est(data, bandwidth_list, kernel = 'cosine', grid = 0, grid_num = 
 def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False):
     # non-compact kernel list = {'gaussian','exponential'} | compact kernel list = {'tophat','epanechnikov','linear','cosine'}
     import numpy as np
-    from sklearn.neighbors import KernelDensity
     from tqdm import tqdm
     import gudhi
-    import torch
     import matplotlib.pyplot as plot
-    import seaborn as sns    
 
     # match data format
     if not isinstance(data, np.ndarray):
@@ -251,13 +248,18 @@ def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'co
                 axes.set_title(r"S(h) for $H_0$",fontsize = 15)
                 plot.plot(bandwidth_list, s_h0, color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 4)
                 plot.scatter(bandwidth_list, s_h0, color = [255/255, 110/255, 97/255], s=100)
-        
-    if (sum(s_h0 == max(s_h0)) == 1):
-        if (confidence_band == True):
-            return bandwidth_list[s_h0.tolist().index(max(s_h0))], cn_list[s_h0.tolist().index(max(s_h0))]
-        elif (confidence_band == False):
-            return bandwidth_list[s_h0.tolist().index(max(s_h0))]
-    else: return 'cannot find the best h'
+
+    try:
+        if (sum(s_h0 == max(s_h0)) == 1):
+            if (confidence_band == True):
+                return bandwidth_list[s_h0.tolist().index(max(s_h0))], cn_list[s_h0.tolist().index(max(s_h0))]
+            elif (confidence_band == False):
+                return bandwidth_list[s_h0.tolist().index(max(s_h0))]
+        else:
+            raise Exception("cannot find the best h")
+    except Exception as e:
+        print(e)
+        raise SystemExit
 
 ############################################################
 ################## Band Width estimator H1 #################
@@ -265,12 +267,9 @@ def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'co
 def bandwidth_est_h1(data, bandwidth_list, confidence_band = False, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, Plot = False):
     # non-compact kernel list = {'gaussian','exponential'} | compact kernel list = {'tophat','epanechnikov','linear','cosine'}
     import numpy as np
-    from sklearn.neighbors import KernelDensity
     from tqdm import tqdm
     import gudhi
-    import torch
     import matplotlib.pyplot as plot
-    import seaborn as sns
 
     # match data format
     if not isinstance(data, np.ndarray):
@@ -286,7 +285,7 @@ def bandwidth_est_h1(data, bandwidth_list, confidence_band = False, kernel = 'co
     cn_list = np.array([])
     for h in tqdm(bandwidth_list):
         # confidence band & p_hat
-        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True, multiprocess=multiprocess)
+        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, prob_est = True, multiprocess=multiprocess)
         cn_list = np.append(cn_list, cn)
 
         # find significant homology
@@ -320,13 +319,19 @@ def bandwidth_est_h1(data, bandwidth_list, confidence_band = False, kernel = 'co
                 axes.set_title(r"S(h) for $H_1$",fontsize = 15)
                 plot.plot(bandwidth_list, s_h1, color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 4)
                 plot.scatter(bandwidth_list, s_h1, color = [255/255, 110/255, 97/255], s=100)
-            
-    if (sum(s_h1 == max(s_h1)) == 1):
-        if (confidence_band == True):
-            return bandwidth_list[s_h1.tolist().index(max(s_h1))], cn_list[s_h1.tolist().index(max(s_h1))]
-        elif (confidence_band == False):
-            return bandwidth_list[s_h1.tolist().index(max(s_h1))]
-    else: return 'cannot find the best h'
+    
+    try:
+        if (sum(s_h1 == max(s_h1)) == 1):
+            if (confidence_band == True):
+                return bandwidth_list[s_h1.tolist().index(max(s_h1))], cn_list[s_h1.tolist().index(max(s_h1))]
+            elif (confidence_band == False):
+                return bandwidth_list[s_h1.tolist().index(max(s_h1))]
+        else:
+            raise Exception("cannot find the best h")
+    except Exception as e:
+        print(e)
+        raise SystemExit
+
 
 ############################################################
 ########### top_pr fitting only for real samples ###########
