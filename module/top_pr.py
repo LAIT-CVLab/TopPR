@@ -60,7 +60,7 @@ def set_grid(data, grid_num = 100):
 ############################################################
 ##################### Confidence Band ######################
 ############################################################
-def confband_est(data, h, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, repeat = 100, isnumpy = False, prob_est = False, multiprocess=False):
+def confband_est(data, h, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .1, repeat = 100, prob_est = False, multiprocess=False):
     # Set "p_hat = True" to return the estimated p_hat
     # Set "isnumpy = True" to return the not to transform the data into numpy
     # !!! We implement "p_hat" and "isnumpy" options for using this function in Bandwidth Estimator !!! #
@@ -69,19 +69,8 @@ def confband_est(data, h, kernel = 'cosine', grid = 0, grid_num = 100, alpha = .
     import torch
 
     # data as numpy array
-    if (isnumpy == False):
-        if (isinstance(data, list) == True):
-            data = np.asarray(data)
-        elif (isinstance(data, tuple) == True):
-            data = np.asarray(data)
-        elif (torch.is_tensor(data) == True):
-            for batch_idx, Input in enumerate(data):
-                if (batch_idx == 0):
-                    convert_data = Input.detach().numpy()
-                else:
-                    convert_data = np.vstack((convert_data, Input.detach().numpy()))
-            data = convert_data
-    elif (isnumpy == True): pass
+    if not isinstance(data, np.ndarray):
+        data = np.asarray(data)
     
     # automatically set grid
     if (len(grid) == 1):
@@ -132,18 +121,9 @@ def bandwidth_est(data, bandwidth_list, kernel = 'cosine', grid = 0, grid_num = 
     import seaborn as sns
 
     # match data format
-    if (isinstance(data, list) == True):
+    if not isinstance(data, np.ndarray):
         data = np.asarray(data)
-    elif (isinstance(data, tuple) == True):
-        data = np.asarray(data)
-    elif (torch.is_tensor(data) == True):
-        for batch_idx, Input in enumerate(data):
-            if (batch_idx == 0):
-                convert_data = Input.detach().numpy()
-            else:
-                convert_data = np.vstack((convert_data, Input.detach().numpy()))
-        data = convert_data
-    else: pass
+
 
     # automatically set grid
     if (grid == 0):
@@ -223,18 +203,8 @@ def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'co
     import seaborn as sns    
 
     # match data format
-    if (isinstance(data, list) == True):
+    if not isinstance(data, np.ndarray):
         data = np.asarray(data)
-    elif (isinstance(data, tuple) == True):
-        data = np.asarray(data)
-    elif (torch.is_tensor(data) == True):
-        for batch_idx, Input in enumerate(data):
-            if (batch_idx == 0):
-                convert_data = Input.detach().numpy()
-            else:
-                convert_data = np.vstack((convert_data, Input.detach().numpy()))
-        data = convert_data
-    else: pass
 
     # automatically set grid
     if (grid == 0):
@@ -303,18 +273,8 @@ def bandwidth_est_h1(data, bandwidth_list, confidence_band = False, kernel = 'co
     import seaborn as sns
 
     # match data format
-    if (isinstance(data, list) == True):
+    if not isinstance(data, np.ndarray):
         data = np.asarray(data)
-    elif (isinstance(data, tuple) == True):
-        data = np.asarray(data)
-    elif (torch.is_tensor(data) == True):
-        for batch_idx, Input in enumerate(data):
-            if (batch_idx == 0):
-                convert_data = Input.detach().numpy()
-            else:
-                convert_data = np.vstack((convert_data, Input.detach().numpy()))
-        data = convert_data
-    else: pass
 
     # automatically set grid
     if (grid == 0):
@@ -375,36 +335,14 @@ def top_pr(real_features, fake_features, bandwidth_list, homology = 0, kernel = 
     # if homology = 0, then fits h with using H_0, when homology = 1 use H_1
     import numpy as np
     from sklearn.neighbors import KernelDensity
-    from sklearn.metrics import pairwise_distances
-    import torch
 
     # match real data format
-    if (isinstance(real_features, list) == True):
+    if not isinstance(real_features, np.ndarray):
         real_features = np.asarray(real_features)
-    elif (isinstance(real_features, tuple) == True):
-        real_features = np.asarray(real_features)
-    elif (torch.is_tensor(real_features) == True):
-        for Input in real_features:
-            if (batch_idx == 0):
-                convert_data = Input.detach().numpy()
-            else:
-                convert_data = np.vstack((convert_data, Input.detach().numpy()))
-        real_features = convert_data
-    else: pass
 
     # match fake data format
-    if (isinstance(fake_features, list) == True):
+    if not isinstance(fake_features, np.ndarray):
         fake_features = np.asarray(fake_features)
-    elif (isinstance(fake_features, tuple) == True):
-        fake_features = np.asarray(fake_features)
-    elif (torch.is_tensor(fake_features) == True):
-        for Input in fake_features:
-            if (batch_idx == 0):
-                convert_data = Input.detach().numpy()
-            else:
-                convert_data = np.vstack((convert_data, Input.detach().numpy()))
-        fake_features = convert_data
-    else: pass
 
     # find optimal bandwidth and corresponding confidence band
     if (homology == 0):
@@ -422,46 +360,44 @@ def top_pr(real_features, fake_features, bandwidth_list, homology = 0, kernel = 
     # count significant real samples on real manifold
     num_real = 0
     p_hat_rr = score_sample_KDE(KDE_r, real_features, multiprocess= multiprocess)
+    num_real = (p_hat_rr > conf_band).sum()
 
-    for iloop in range(len(p_hat_rr)):
+    """for iloop in range(len(p_hat_rr)):
         if (p_hat_rr[iloop] > conf_band):
             num_real = num_real + 1
+    """
 
     # count significant fake samples on real manifold
     num_fake_on_real = 0
     p_hat_gr = score_sample_KDE(KDE_r, fake_features, multiprocess= multiprocess)
+    num_fake_on_real = (p_hat_gr > conf_band).sum()
+    """
     for iloop in range(len(p_hat_gr)):
         if (p_hat_gr[iloop] > conf_band):
             num_fake_on_real = num_fake_on_real + 1
+    """
     
     # count significant fake samples on fake manifold
     num_fake = 0
     p_hat_gg = score_sample_KDE(KDE_g, fake_features, multiprocess= multiprocess)
-    for iloop in range(len(p_hat_gg)): 
+    num_fake = (p_hat_gg > conf_band).sum()
+    """for iloop in range(len(p_hat_gg)): 
         if (p_hat_gg[iloop] > conf_band):
             num_fake = num_fake + 1
+    """
 
     # count significant real samples on fake manifold
     num_real_on_fake = 0
     p_hat_rg = score_sample_KDE(KDE_g, real_features, multiprocess= multiprocess)
+    num_real_on_fake = (p_hat_rg > conf_band).sum()
+    """
     for iloop in range(len(p_hat_rg)):
         if (p_hat_rg[iloop] > conf_band):
             num_real_on_fake = num_real_on_fake + 1
+    """
 
-    # topological precision
-    if (num_real ==0):
-        num_real = 0.00000000001
-        t_precision = min([(len(real_features) * num_fake_on_real) / (len(fake_features) * num_real),1])
-    else:
-        t_precision = min([(len(real_features) * num_fake_on_real) / (len(fake_features) * num_real),1])
-
-    # topological recall
-    if (num_fake == 0):
-        num_fake = 0.00000000001
-        t_recall = min([(len(fake_features) * num_real_on_fake) / (len(real_features) * num_fake),1])
-    else:
-        t_recall = min([(len(fake_features) * num_real_on_fake) / (len(real_features) * num_fake),1])
-        
+    # topological precision and recall
+    t_precision, t_recall = calculate_tpr(num_real, num_fake, real_features, fake_features, num_fake_on_real, num_real_on_fake)
     return t_precision, t_recall
 
 ############################################################
@@ -471,36 +407,14 @@ def top_pr_rf(real_features, fake_features, bandwidth_list, homology = 0, kernel
     # if homology = 0, then fits h with using H_0, when homology = 1 use H_1
     import numpy as np
     from sklearn.neighbors import KernelDensity
-    from sklearn.metrics import pairwise_distances
-    import torch
 
     # match real data format
-    if (isinstance(real_features, list) == True):
+    if not isinstance(real_features, np.ndarray):
         real_features = np.asarray(real_features)
-    elif (isinstance(real_features, tuple) == True):
-        real_features = np.asarray(real_features)
-    elif (torch.is_tensor(real_features) == True):
-        for Input in real_features:
-            if (batch_idx == 0):
-                convert_data = Input.detach().numpy()
-            else:
-                convert_data = np.vstack((convert_data, Input.detach().numpy()))
-        real_features = convert_data
-    else: pass
 
     # match fake data format
-    if (isinstance(fake_features, list) == True):
+    if not isinstance(fake_features, np.ndarray):
         fake_features = np.asarray(fake_features)
-    elif (isinstance(fake_features, tuple) == True):
-        fake_features = np.asarray(fake_features)
-    elif (torch.is_tensor(fake_features) == True):
-        for Input in fake_features:
-            if (batch_idx == 0):
-                convert_data = Input.detach().numpy()
-            else:
-                convert_data = np.vstack((convert_data, Input.detach().numpy()))
-        fake_features = convert_data
-    else: pass
 
     # find optimal bandwidth and corresponding confidence band
     if (homology == 0):
@@ -521,45 +435,46 @@ def top_pr_rf(real_features, fake_features, bandwidth_list, homology = 0, kernel
     # count significant real samples on real manifold
     num_real = 0
     p_hat_rr = score_sample_KDE(KDE_r, real_features, multiprocess= multiprocess)
-    for iloop in range(len(p_hat_rr)):
+
+    num_real = (p_hat_rr > conf_band_r).sum()
+
+    """for iloop in range(len(p_hat_rr)):
         if (p_hat_rr[iloop] > conf_band_r):
-            num_real = num_real + 1
+            num_real = num_real + 1"""
 
     # count significant fake samples on real manifold
     num_fake_on_real = 0
     p_hat_gr = score_sample_KDE(KDE_r, fake_features, multiprocess= multiprocess)
+
+    num_fake_on_real = (p_hat_gr > conf_band_r).sum()
+    """
     for iloop in range(len(p_hat_gr)):
         if (p_hat_gr[iloop] > conf_band_r):
             num_fake_on_real = num_fake_on_real + 1
+    """
     
     # count significant fake samples on fake manifold
     num_fake = 0
     p_hat_gg = score_sample_KDE(KDE_g, fake_features, multiprocess= multiprocess)
+    num_fake = (p_hat_gg > conf_band_g).sum()
+    """
     for iloop in range(len(p_hat_gg)): 
         if (p_hat_gg[iloop] > conf_band_g):
             num_fake = num_fake + 1
+    """
 
     # count significant real samples on fake manifold
     num_real_on_fake = 0
-    p_hat_rg = score_sample_KDE(KDE_r, real_features, multiprocess= multiprocess)
+    p_hat_rg = score_sample_KDE(KDE_g, real_features, multiprocess= multiprocess)
+    num_real_on_fake = (p_hat_rg > conf_band_g).sum()
+    """
     for iloop in range(len(p_hat_rg)):
         if (p_hat_rg[iloop] > conf_band_g):
             num_real_on_fake = num_real_on_fake + 1
+    """
 
-    # topological precision
-    if (num_real ==0):
-        num_real = 0.00000000001
-        t_precision = min([(len(real_features) * num_fake_on_real) / (len(fake_features) * num_real),1])
-    else:
-        t_precision = min([(len(real_features) * num_fake_on_real) / (len(fake_features) * num_real),1])
-
-    # topological recall
-    if (num_fake == 0):
-        num_fake = 0.00000000001
-        t_recall = min([(len(fake_features) * num_real_on_fake) / (len(real_features) * num_fake),1])
-    else:
-        t_recall = min([(len(fake_features) * num_real_on_fake) / (len(real_features) * num_fake),1])
-        
+    # topological precision and recall
+    t_precision, t_recall = calculate_tpr(num_real, num_fake, real_features, fake_features, num_fake_on_real, num_real_on_fake)
     return t_precision, t_recall
 
 '''
@@ -611,3 +526,21 @@ def top_pr(real_features, fake_features, conf_band, bandwidth):
         
     return t_precision, t_recall
 '''
+
+
+def calculate_tpr(num_real, num_fake, real_features, fake_features, num_fake_on_real, num_real_on_fake):
+    # topological precision
+    if (num_real ==0):
+        num_real = 0.00000000001
+        t_precision = min([(len(real_features) * num_fake_on_real) / (len(fake_features) * num_real),1])
+    else:
+        t_precision = min([(len(real_features) * num_fake_on_real) / (len(fake_features) * num_real),1])
+
+    # topological recall
+    if (num_fake == 0):
+        num_fake = 0.00000000001
+        t_recall = min([(len(fake_features) * num_real_on_fake) / (len(real_features) * num_fake),1])
+    else:
+        t_recall = min([(len(fake_features) * num_real_on_fake) / (len(real_features) * num_fake),1])
+        
+    return t_precision, t_recall
