@@ -136,7 +136,7 @@ def bandwidth_est(data, bandwidth_list, kernel = 'cosine', grid = 0, grid_num = 
     s_h1 = np.array([])
     for h in tqdm(bandwidth_list):
         # confidence band & p_hat
-        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True, multiprocess=multiprocess)
+        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, prob_est = True, multiprocess=multiprocess)
 
         # find significant homology
         PD = gudhi.CubicalComplex(dimensions = [round(len(grid)**(1/grid.shape[1])),round(len(grid)**(1/grid.shape[1]))],
@@ -213,7 +213,7 @@ def bandwidth_est_h0(data, bandwidth_list, confidence_band = False, kernel = 'co
     cn_list = np.array([])
     for h in tqdm(bandwidth_list):
         # confidence band & p_hat
-        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, isnumpy = True, prob_est = True, multiprocess=multiprocess)
+        cn, p_hat = confband_est(data, h, kernel = kernel, grid = grid, alpha = alpha, prob_est = True, multiprocess=multiprocess)
         cn_list = np.append(cn_list, cn)
 
         # find significant homology

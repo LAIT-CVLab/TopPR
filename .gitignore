@@ -196,3 +196,5 @@ cython_debug/
 experiments/
 
 # Ignore Yoojin's local region
+module/gan_eval/
+module_test.ipynb
