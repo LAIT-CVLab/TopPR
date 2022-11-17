@@ -20,9 +20,19 @@ the support manifold and provides its statistical consistency under noise.
 
 
 ## How to run
-'''  
+'''python  
 from top_pr import top_pr
 Top_PR = top_pr.top_pr(real_feature, fake_feature, random_proj = True)  
 '''
+
+## 1. Background
+# Topological precision and recall (TopP&R) metrics  
+TopP and TopR are defined as bellow:  
+For the robust estimates of the precision, we apply the support estimates to the precision of data points,  
+and define the topological precision (TopP) as
+
+> $\text{TopP}_\mathcal{X}(\mathcal{Y}) :=\frac{\sum_{j=1}^{m}1\left(Y_{j}\in\hat{{\rm supp}}(P)\cap\hat{{\rm supp}}(Q)\right)}{\sum_{j=1}^{m}1\left(Y_{j}\in\hat{{\rm supp}}(Q)\right)}=\frac{\sum_{j=1}^{m}1\left(\hat{p}_{h_{n}}(Y_{j})>c_{\mathcal{X}},\;\hat{q}_{h_{m}}(Y_{j})>c_{\mathcal{Y}}\right)}{\sum_{j=1}^{m}1\left(\hat{q}_{h_{m}}(Y_{j})>c_{\mathcal{Y}}\right)}$
+
+
 
 Developer : Pum Jun Kim, Yoojin Jang (LAIT)
