@@ -20,15 +20,9 @@ the support manifold and provides its statistical consistency under noise.
 
 
 ## How to run
-'''py
-import numpy as np
-import matplotlib.pyplot as plot
-import seaborn as sns
-from top_pr import top_Pr
-'''
-''' py
-# calculate the metrics
-Top_PR = top_pr.top_pr(real_feature, fake_feature, random_proj = True)
+'''  
+from top_pr import top_pr
+Top_PR = top_pr.top_pr(real_feature, fake_feature, random_proj = True)  
 '''
 
 Developer : Pum Jun Kim, Yoojin Jang (LAIT)
