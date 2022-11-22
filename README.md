@@ -56,6 +56,10 @@ REAL = np.random.normal(loc=0.0, scale=1.0, size=[10000, 64])
 FAKE = np.random.normal(loc=0.4, scale=1.0, size=[10000, 64])
 
 # Evaluation
-TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
-print(Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1'))
+Eval = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
+print(Eval)
+```
+Above test code will result in the following estimates (may fluctuate due to randomness).
+```python
+{'fidelity': 0.5809355409098216, 'diversity': 0.5653883972468043, 'Top_F1': 0.5730565391609778}
 ```
