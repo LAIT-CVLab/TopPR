@@ -23,7 +23,7 @@ the support manifold and provides its statistical consistency under noise.
 The proposed metric TopP&R is defined in the following three steps: (a) Confidence band estimation with bootstrapping in section 2,
 (b) Robust support estimation, and (c) Evaluationn via TopP&R in section 3 of our paper.
 
-## Definition of TopP&R
+## How TopP&R is defined?
 We define the precision and recall of data points as
 
 $$precision_P(\mathcal{Y}):={\sum_{j=1}^m1(Y_j\in supp(P)\cap supp(Q)) / \sum^m_{j=1}1(Y_j\in supp(Q))}$$
