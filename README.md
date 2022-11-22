@@ -19,9 +19,9 @@ knowledge, this is the first evaluation metric focused on the robust estimation 
 the support manifold and provides its statistical consistency under noise.
 
 ## Overview of topological precision and recall (TopP&R)
-
+![toppr_overview](https://user-images.githubusercontent.com/102020840/203247514-3f64b9e6-bf74-434e-8c40-c6dfdfec7e59.png)
 The proposed metric TopP&R is defined in the following three steps: (a) Confidence band estimation with bootstrapping in section 2,
-(b) Robust support estimation, and (c) Evaluationn via TopP&R in section 3.
+(b) Robust support estimation, and (c) Evaluationn via TopP&R in section 3 of our paper.
 
 ## Top precision and recall metric
 We define the precision and recall of data points as
