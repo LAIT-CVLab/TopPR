@@ -18,6 +18,33 @@ while accurately capturing the true trend of change in samples. To the best of o
 knowledge, this is the first evaluation metric focused on the robust estimation of
 the support manifold and provides its statistical consistency under noise.
 
+## Overview of topological precision and recall (TopP&R)
+
+The proposed metric TopP&R is defined in the following three steps: (a) Confidence band estimation with bootstrapping in section 2,
+(b) Robust support estimation, and (c) Evaluationn via TopP&R in section 3.
+
+## Top precision and recall metric
+We define the precision and recall of data points as
+
+$$precision_P(\mathcal{Y}):={\sum_{j=1}^m1(Y_j\in supp(P)\cap supp(Q)) / \sum^m_{j=1}1(Y_j\in supp(Q))}$$
+
+$$recall_Q(\mathcal{X}):={\sum_{i=1}^n 1(X_i\in supp(Q)\cap supp(P)) / \sum_{i=1}^n 1(X_i\in supp(P))}$$
+
+In practice, $supp(P)$ and $supp(Q)$ are not known a priori and need to be estimated, and since we allow noise,
+these estimates should be robust to noise. For this, we use the kernel density estimator (KDE) and 
+the bootstrap bandwidth to robustly estimate the support. 
+Using the estimated support (superlevel set at $c_{\mathcal{X}}$ and $c_{\mathcal{Y}}$), we define
+the topological precision (TopP) and recall (TopR) as bellow:
+
+$$TopP_{\mathcal{X}}(\mathcal{Y}):=\sum^m_{j=1}1(\hat{p_{h_n}}(Y_j)>c_{\mathcal{X}},\hat{q_{h_m}}(Y_j)>c_{\mathcal{Y}}) / 
+\sum^m_{j=1} 1(\hat{q_{h_m}}(Y_j)>c_{\mathcal{Y}})$$
+
+$$TopR_{\mathcal{Y}}(\mathcal{X}):=\sum^n_{i=1}1(\hat{q_{h_m}}(X_i)>c_{\mathcal{Y}},\hat{p_{h_n}}(X_i)>c_{\mathcal{X}}) / 
+\sum^n_{i=1} 1(\hat{p_{h_n}}(X_i)>c_{\mathcal{X}})$$
+
+The kernel bandwidths $h_n$ and $h_m$ are hyperparameters that users need to choose. We also provide our guide line to select 
+the optimal bandwidths $h_n$ and $h_m$ in practice (see our Appendix F.3).
+
 ## How to use
 ```python
 from module import top_pr.top_pr as TopPR
