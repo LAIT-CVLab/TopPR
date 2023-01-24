@@ -49,12 +49,9 @@ the optimal bandwidths $h_n$ and $h_m$ in practice (see our Appendix F.3).
 ```python
 # Call packages
 import matplotlib.pyplot as plot
-import seaborn as sns
 import numpy as np
-from sklearn.neighbors import KernelDensity
-from sklearn.metrics import pairwise_distances
-import torch
 from module import mode_drop
+# Call metrics
 from module.top_pr import top_pr as TopPR
 from prdc import compute_prdc
 
