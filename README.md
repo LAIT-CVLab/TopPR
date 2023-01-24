@@ -58,7 +58,7 @@ from module import mode_drop
 from module.top_pr import top_pr as TopPR
 from prdc import compute_prdc
 
-# Get dataset (simultaneous mode drop case)
+# Get dataset ('simultaneous' mode drop case. User can change simultaneous to sequential for 'sequential' mode drop case)
 simul_data = np.array([mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0), 
     mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.1),
     mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.2),
@@ -72,7 +72,7 @@ simul_data = np.array([mode_drop.gaussian_mode_drop(method = 'simultaneous', rat
     mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 1.0)
     ])
 
-# Evaluation process
+# Evaluation step
 for iloop in range(10):
     start = 0
     for Ratio in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
@@ -98,7 +98,7 @@ for iloop in range(10):
             dc = np.vstack((dc, [DC.get('density'), DC.get('coverage')]))
             Top_pr = np.vstack((Top_pr, [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]))
 
-# Result
+# Visualization of Result
 x = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 fig = plot.figure(figsize = (12,3))
 for i in range(1,3):
