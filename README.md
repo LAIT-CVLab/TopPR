@@ -47,19 +47,84 @@ the optimal bandwidths $h_n$ and $h_m$ in practice (see our Appendix F.3).
 
 ## How to use
 ```python
-from module import top_pr.top_pr as TopPR
+# Call packages
+import matplotlib.pyplot as plot
+import seaborn as sns
 import numpy as np
+from sklearn.neighbors import KernelDensity
+from sklearn.metrics import pairwise_distances
+import torch
+from module import mode_drop
+from module.top_pr import top_pr as TopPR
+from prdc import compute_prdc
 
-# Real data
-REAL = np.random.normal(loc=0.0, scale=1.0, size=[10000, 64])
-# Fake data
-FAKE = np.random.normal(loc=0.4, scale=1.0, size=[10000, 64])
+# Get dataset (simultaneous mode drop case)
+simul_data = np.array([mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0), 
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.1),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.2),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.3),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.4),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.5),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.6),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.7),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.8),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.9),
+    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 1.0)
+    ])
 
-# Evaluation
-Eval = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
-print(Eval)
+# Evaluation process
+for iloop in range(10):
+    start = 0
+    for Ratio in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
+        # Define real and fake dataset
+        REAL = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0)
+        FAKE = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = Ratio)
+        
+        # Evaluation with TopPR
+        Top_PR = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
+        
+        # Evaluation with P&R and D&C
+        PR = compute_prdc(REAL, FAKE, 3)
+        DC = compute_prdc(REAL, FAKE, 5)
+        
+        if (start == 0):
+            pr = [PR.get('precision'), PR.get('recall')]
+            dc = [DC.get('density'), DC.get('coverage')]
+            Top_pr = [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]
+            start = 1
+            
+        else:
+            pr = np.vstack((pr, [PR.get('precision'), PR.get('recall')]))
+            dc = np.vstack((dc, [DC.get('density'), DC.get('coverage')]))
+            Top_pr = np.vstack((Top_pr, [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]))
+
+# Result
+x = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+fig = plot.figure(figsize = (12,3))
+for i in range(1,3):
+    axes = fig.add_subplot(1,2,i)
+    
+    # Fidelity
+    if (i == 1):
+        axes.set_title("Fidelity",fontsize = 15)
+        plot.ylim([0.5, 1.5])
+        plot.plot(x, Top_pr[:,0], color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 3, marker = 'o', label = "TopP")
+        plot.plot(x, pr[:,0], color = [77/255, 110/255, 111/255], linestyle = ':', linewidth = 3, marker = 'o', label = "precision (k=3)")
+        plot.plot(x, dc[:,0], color = [15/255, 76/255, 130/255], linestyle = '-.', linewidth = 3, marker = 'o', label = "density (k=5)")
+        plot.plot(x, np.linspace(1.0, 1.0, 11), color = 'black', linestyle = ':', linewidth = 2)
+        plot.legend(fontsize = 9)
+    
+    # Diversity
+    elif (i == 2):
+        axes.set_title("Diversity",fontsize = 15)
+        plot.plot(x, Top_pr[:,1], color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 3, marker = 'o', label = "TopR")
+        plot.plot(x, pr[:,1], color = [77/255, 110/255, 111/255], linestyle = ':', linewidth = 3, marker = 'o', label = "recall (k=3)")
+        plot.plot(x, dc[:,1], color = [15/255, 76/255, 130/255], linestyle = '-.', linewidth = 3, marker = 'o', label = "coverage (k=5)")
+        plot.plot(x, np.linspace(1.0, 0.14, 11), color = 'black', linestyle = ':', linewidth = 2)
+        plot.legend(fontsize = 9)
 ```
 Above test code will result in the following estimates (may fluctuate due to randomness).
+
 ```python
 {'fidelity': 0.5809355409098216, 'diversity': 0.5653883972468043, 'Top_F1': 0.5730565391609778}
 ```
