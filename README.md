@@ -120,7 +120,7 @@ for i in range(1,3):
         plot.plot(x, np.linspace(1.0, 0.14, 11), color = 'black', linestyle = ':', linewidth = 2)
         plot.legend(fontsize = 9)
 ```
-Above test code will result in the following estimates (may fluctuate due to randomness).
+Above test code will result in the following figure.
 
 ```python
 {'fidelity': 0.5809355409098216, 'diversity': 0.5653883972468043, 'Top_F1': 0.5730565391609778}
