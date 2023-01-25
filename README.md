@@ -121,7 +121,4 @@ for i in range(1,3):
         plot.legend(fontsize = 9)
 ```
 Above test code will result in the following figure.
-
-```python
-{'fidelity': 0.5809355409098216, 'diversity': 0.5653883972468043, 'Top_F1': 0.5730565391609778}
-```
+![test_figure](https://user-images.githubusercontent.com/102020840/214467570-d702ed95-bc61-4a1c-9f6c-99fe37e541d9.png)
