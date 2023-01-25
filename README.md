@@ -155,7 +155,7 @@ for i in range(1,3):
         plot.plot(x, Top_pr[:,0], color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 3, marker = 'o', label = "TopP")
         plot.plot(x, pr[:,0], color = [77/255, 110/255, 111/255], linestyle = ':', linewidth = 3, marker = 'o', label = "precision (k=3)")
         plot.plot(x, dc[:,0], color = [15/255, 76/255, 130/255], linestyle = '-.', linewidth = 3, marker = 'o', label = "density (k=5)")
-        plot.plot(x, np.linspace(1.0, 1.0, 11), color = 'black', linestyle = ':', linewidth = 2)
+        plot.plot(x, np.linspace(1.0, 1.0, 7), color = 'black', linestyle = ':', linewidth = 2)
         plot.legend(fontsize = 9)
     
     # Diversity
@@ -164,7 +164,7 @@ for i in range(1,3):
         plot.plot(x, Top_pr[:,1], color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 3, marker = 'o', label = "TopR")
         plot.plot(x, pr[:,1], color = [77/255, 110/255, 111/255], linestyle = ':', linewidth = 3, marker = 'o', label = "recall (k=3)")
         plot.plot(x, dc[:,1], color = [15/255, 76/255, 130/255], linestyle = '-.', linewidth = 3, marker = 'o', label = "coverage (k=5)")
-        plot.plot(x, np.linspace(1.0, 0.14, 11), color = 'black', linestyle = ':', linewidth = 2)
+        plot.plot(x, np.linspace(1.0, 0.14, 7), color = 'black', linestyle = ':', linewidth = 2)
         plot.legend(fontsize = 9)
 ```
 Above test code will result in the following figure.
