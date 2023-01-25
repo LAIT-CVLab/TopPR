@@ -54,46 +54,90 @@ from module import mode_drop
 # Call metrics
 from module.top_pr import top_pr as TopPR
 from prdc import compute_prdc
+```
 
-# Get dataset ('simultaneous' mode drop case. User can change simultaneous to sequential for 'sequential' mode drop case)
-simul_data = np.array([mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0), 
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.1),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.2),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.3),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.4),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.5),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.6),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.7),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.8),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0.9),
-    mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 1.0)
-    ])
-
+### 1. Sequential mode drop experiment
+```python
 # Evaluation step
-for iloop in range(10):
-    start = 0
-    for Ratio in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
-        # Define real and fake dataset
-        REAL = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0)
-        FAKE = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = Ratio)
+start = 0
+for Ratio in [0, 1, 2, 3, 4, 5, 6]:
+    # Define real and fake dataset
+    REAL = mode_drop.gaussian_mode_drop(method = 'sequential', ratio = 0)
+    FAKE = mode_drop.gaussian_mode_drop(method = 'sequential', ratio = Ratio)
         
-        # Evaluation with TopPR
-        Top_PR = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
+    # Evaluation with TopPR
+    Top_PR = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
         
-        # Evaluation with P&R and D&C
-        PR = compute_prdc(REAL, FAKE, 3)
-        DC = compute_prdc(REAL, FAKE, 5)
+    # Evaluation with P&R and D&C
+    PR = compute_prdc(REAL, FAKE, 3)
+    DC = compute_prdc(REAL, FAKE, 5)
         
-        if (start == 0):
-            pr = [PR.get('precision'), PR.get('recall')]
-            dc = [DC.get('density'), DC.get('coverage')]
-            Top_pr = [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]
-            start = 1
+    if (start == 0):
+        pr = [PR.get('precision'), PR.get('recall')]
+        dc = [DC.get('density'), DC.get('coverage')]
+        Top_pr = [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]
+        start = 1
             
-        else:
-            pr = np.vstack((pr, [PR.get('precision'), PR.get('recall')]))
-            dc = np.vstack((dc, [DC.get('density'), DC.get('coverage')]))
-            Top_pr = np.vstack((Top_pr, [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]))
+    else:
+        pr = np.vstack((pr, [PR.get('precision'), PR.get('recall')]))
+        dc = np.vstack((dc, [DC.get('density'), DC.get('coverage')]))
+        Top_pr = np.vstack((Top_pr, [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]))
+
+# Visualization of Result
+x = [0, 0.17, 0.34, 0.50, 0.67, 0.85, 1]
+fig = plot.figure(figsize = (12,3))
+for i in range(1,3):
+    axes = fig.add_subplot(1,2,i)
+    
+    # Fidelity
+    if (i == 1):
+        axes.set_title("Fidelity",fontsize = 15)
+        plot.ylim([0.5, 1.5])
+        plot.plot(x, Top_pr[:,0], color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 3, marker = 'o', label = "TopP")
+        plot.plot(x, pr[:,0], color = [77/255, 110/255, 111/255], linestyle = ':', linewidth = 3, marker = 'o', label = "precision (k=3)")
+        plot.plot(x, dc[:,0], color = [15/255, 76/255, 130/255], linestyle = '-.', linewidth = 3, marker = 'o', label = "density (k=5)")
+        plot.plot(x, np.linspace(1.0, 1.0, 11), color = 'black', linestyle = ':', linewidth = 2)
+        plot.legend(fontsize = 9)
+    
+    # Diversity
+    elif (i == 2):
+        axes.set_title("Diversity",fontsize = 15)
+        plot.plot(x, Top_pr[:,1], color = [255/255, 110/255, 97/255], linestyle = '-', linewidth = 3, marker = 'o', label = "TopR")
+        plot.plot(x, pr[:,1], color = [77/255, 110/255, 111/255], linestyle = ':', linewidth = 3, marker = 'o', label = "recall (k=3)")
+        plot.plot(x, dc[:,1], color = [15/255, 76/255, 130/255], linestyle = '-.', linewidth = 3, marker = 'o', label = "coverage (k=5)")
+        plot.plot(x, np.linspace(1.0, 0.14, 11), color = 'black', linestyle = ':', linewidth = 2)
+        plot.legend(fontsize = 9)
+```
+Above test code will result in the following figure.
+![sim](https://user-images.githubusercontent.com/102020840/214467800-e12678d1-96a5-4b92-939b-c2772f1c8023.png)  
+
+
+### 2. Simultaneous mode drop experiment
+```python
+# Evaluation step
+start = 0
+for Ratio in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
+    # Define real and fake dataset
+    REAL = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0)
+    FAKE = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = Ratio)
+        
+    # Evaluation with TopPR
+    Top_PR = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
+        
+    # Evaluation with P&R and D&C
+    PR = compute_prdc(REAL, FAKE, 3)
+    DC = compute_prdc(REAL, FAKE, 5)
+        
+    if (start == 0):
+        pr = [PR.get('precision'), PR.get('recall')]
+        dc = [DC.get('density'), DC.get('coverage')]
+        Top_pr = [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]
+        start = 1
+            
+    else:
+        pr = np.vstack((pr, [PR.get('precision'), PR.get('recall')]))
+        dc = np.vstack((dc, [DC.get('density'), DC.get('coverage')]))
+        Top_pr = np.vstack((Top_pr, [Top_PR.get('fidelity'), Top_PR.get('diversity'), Top_PR.get('Top_F1')]))
 
 # Visualization of Result
 x = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
