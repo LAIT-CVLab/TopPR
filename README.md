@@ -109,7 +109,7 @@ for i in range(1,3):
         plot.legend(fontsize = 9)
 ```
 Above test code will result in the following figure.
-![sim](https://user-images.githubusercontent.com/102020840/214467800-e12678d1-96a5-4b92-939b-c2772f1c8023.png)  
+![seq](https://user-images.githubusercontent.com/102020840/214468838-28557fdb-fb0f-49a4-8242-541afd3b7013.png)  
 
 
 ### 2. Simultaneous mode drop experiment
