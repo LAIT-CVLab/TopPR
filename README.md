@@ -121,4 +121,4 @@ for i in range(1,3):
         plot.legend(fontsize = 9)
 ```
 Above test code will result in the following figure.
-![test_figure](https://user-images.githubusercontent.com/102020840/214467570-d702ed95-bc61-4a1c-9f6c-99fe37e541d9.png)
+![sim](https://user-images.githubusercontent.com/102020840/214467800-e12678d1-96a5-4b92-939b-c2772f1c8023.png)
