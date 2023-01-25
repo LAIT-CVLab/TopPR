@@ -51,6 +51,7 @@ the optimal bandwidths $h_n$ and $h_m$ in practice (see our Appendix F.3).
 import matplotlib.pyplot as plot
 import numpy as np
 from module import mode_drop
+
 # Call metrics
 from module.top_pr import top_pr as TopPR
 from prdc import compute_prdc
@@ -61,6 +62,7 @@ from prdc import compute_prdc
 # Evaluation step
 start = 0
 for Ratio in [0, 1, 2, 3, 4, 5, 6]:
+
     # Define real and fake dataset
     REAL = mode_drop.gaussian_mode_drop(method = 'sequential', ratio = 0)
     FAKE = mode_drop.gaussian_mode_drop(method = 'sequential', ratio = Ratio)
@@ -117,6 +119,7 @@ Above test code will result in the following figure.
 # Evaluation step
 start = 0
 for Ratio in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
+
     # Define real and fake dataset
     REAL = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = 0)
     FAKE = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = Ratio)
