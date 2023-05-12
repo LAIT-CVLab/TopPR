@@ -45,7 +45,7 @@ $$TopR_{\mathcal{Y}}(\mathcal{X}):=\sum^n_{i=1}1(\hat{q_{h_m}}(X_i)>c_{\mathcal{
 \sum^n_{i=1} 1(\hat{p_{h_n}}(X_i)>c_{\mathcal{X}})$$
 
 The kernel bandwidths $h_n$ and $h_m$ are hyperparameters that users need to choose. We also provide our guide line to select 
-the optimal bandwidths $h_n$ and $h_m$ in practice (see our Appendix F.3).
+the optimal bandwidths $h_n$ and $h_m$ in practice (see our Appendix G.4).
 
 ## How to use
 ```python
