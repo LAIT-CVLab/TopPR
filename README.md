@@ -1,22 +1,24 @@
 # Topological Metrics
 
 ## Abstract
-> We propose a robust and reliable evaluation metric for generative models by
-introducing topological and statistical treatments for a rigorous support manifold
-estimation. Existing metrics, such as Inception Score (IS), Fréchet Inception
-Distance (FID), and the variants of Precision and Recall (P&R), heavily
-rely on support manifolds that are estimated from sample features. However, the
-reliability of their estimation has not been seriously discussed (and overlooked)
-even though the quality of the evaluation entirely depends on it. In this paper, we
-propose Topological Precision and Recall (TopP&R, pronounced “topper”), which
-provides a systematic approach to estimating support manifolds, retaining only
-topologically and statistically important features with a certain level of confidence.
-This not only makes TopP&R strong for noisy features, but also provides statistical
-consistency. Our theoretical and experimental results show that TopP&R is robust
-to outliers and non-independent and identically distributed (Non-IID) perturbations,
-while accurately capturing the true trend of change in samples. To the best of our
-knowledge, this is the first evaluation metric focused on the robust estimation of
-the support manifold and provides its statistical consistency under noise.
+> We propose a robust and reliable evaluation metric for generative models
+called Topological Precision and Recall (TopP&R, pronounced “topper”), which
+systematically estimates supports by retaining only topologically and statistically
+significant features with a certain level of confidence. Existing metrics, such as
+Inception Score (IS), Fréchet Inception Distance (FID), and various Precision
+and Recall (P&R) variants, rely heavily on support estimates derived from sample
+features. However, the reliability of these estimates has been overlooked, even
+though the quality of the evaluation hinges entirely on their accuracy. In this
+paper, we demonstrate that current methods not only fail to accurately assess
+sample quality when support estimation is unreliable, but also yield inconsistent
+results. In contrast, TopP&R reliably evaluates the sample quality and ensures
+statistical consistency in its results. Our theoretical and experimental findings
+reveal that TopP&R provides a robust evaluation, accurately capturing the true
+trend of change in samples, even in the presence of outliers and non-independent
+and identically distributed (Non-IID) perturbations where other methods result in
+inaccurate support estimation. To our knowledge, TopP&R is the first evaluation
+metric specifically focused on the robust estimation of supports, offering statistical
+consistency under noisy conditions.
 
 ## Overview of topological precision and recall (TopP&R)
 ![toppr_overview](https://user-images.githubusercontent.com/102020840/203247514-3f64b9e6-bf74-434e-8c40-c6dfdfec7e59.png)
