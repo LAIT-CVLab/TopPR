@@ -88,7 +88,7 @@ for Ratio in [0, 1, 2, 3, 4, 5, 6]:
     FAKE = mode_drop.gaussian_mode_drop(method = 'sequential', ratio = Ratio)
         
     # Evaluation with TopPR
-    Top_PR = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
+    Top_PR = TopPR(real_features=REAL, fake_features=FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
         
     # Evaluation with P&R and D&C
     PR = compute_prdc(REAL, FAKE, 3)
@@ -145,7 +145,7 @@ for Ratio in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
     FAKE = mode_drop.gaussian_mode_drop(method = 'simultaneous', ratio = Ratio)
         
     # Evaluation with TopPR
-    Top_PR = TopPR(REAL, FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
+    Top_PR = TopPR(real_features=REAL, fake_features=FAKE, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True)
         
     # Evaluation with P&R and D&C
     PR = compute_prdc(REAL, FAKE, 3)
