@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="top_pr",
-    version="0.1",
+    version="0.2.1",
     author="Pumjun Kim",
     description="TopP&R: Robust Support Estimation Approach "
                 "for Evaluating Fidelity and Diversity in Generative Models.",
