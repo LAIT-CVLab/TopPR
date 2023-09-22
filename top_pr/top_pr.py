@@ -195,7 +195,21 @@ def bandwidth_est(data, bandwidth_list = [], confidence_band = False, kernel = '
 ###########################################
 #   Top P&R
 ###########################################
-def top_pr(real_features, fake_features, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True):
+def compute_top_pr(*, real_features, fake_features, alpha = 0.1, kernel = "cosine", random_proj = True, f1_score = True):
+    """
+    Computing Top Precision and Recall
+        Args: 
+            real_features (n, d): input real features
+            fake_features (n, d): input fake features
+            alpha (float): significance level alpha in confidence band estimation (default=0.1)
+            kernel (str): kernel for KDE                                          (default='cosine')
+            random_proj (bool): If true, it will add linear layer from Pytorch library for random projection. (default=True)
+                                However, If the dimension of the feature is lower than 32, even though random_proj is True, random projection will not be turned on.
+            f1_score (bool): If True, it caculates f1 score for getting a 1-score evaluation (default=True)
+        Returns:
+            evaluation score (dict): fidelity, diversity and (opitionally f1 score.)
+
+    """
     # match data format for random projection
     if (torch.is_tensor(real_features) == False):
         real_features = torch.tensor(real_features, dtype = torch.float32)

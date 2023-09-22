@@ -1,7 +1,11 @@
 # TopP&R: Robust Support Estimation Approach for Evaluating Fidelity and Diversity in Generative Models
-[Paper](https://arxiv.org/abs/2306.08013) | Project Page (Coming Soon)
+[TopP&R: Robust Support Estimation Approach for Evaluating Fidelity and Diversity in Generative Models](https://arxiv.org/abs/2306.08013)
+
+Pumjun Kim, Yoojin Jang, [Jisu Kim](https://jkim82133.github.io/), [Jaejun Yoo](https://scholar.google.co.kr/citations?hl=en&user=7NBlQw4AAAAJ)
+
+[Paper](https://arxiv.org/abs/2306.08013) | Project Page (Coming Soon) | Quick Start: [TopPR](https://github.com/LAIT-CVLab/TopPR#quick-start) | [Colab]()
 ### [News]
-Our **TopP&R** is accepted by **NeurIPS 2023** 🎉!
+* Our **TopP&R** is accepted by **NeurIPS 2023** 🎉!
 ## Abstract
 > We propose a robust and reliable evaluation metric for generative models
 called Topological Precision and Recall (TopP&R, pronounced “topper”), which
@@ -49,15 +53,27 @@ $$TopR_{\mathcal{Y}}(\mathcal{X}):=\sum^n_{i=1}1(\hat{q_{h_m}}(X_i)>c_{\mathcal{
 The kernel bandwidths $h_n$ and $h_m$ are hyperparameters that users need to choose. We also provide our guide line to select 
 the optimal bandwidths $h_n$ and $h_m$ in practice (see our Appendix G.4).
 
+
+
+# Quick Start
+Our method can be used by `pip` command!
+```
+pip install top-pr
+```
+
 ## How to use
+In this example, we evaluate mode drop case. Please consider that we fix the seed number for random projection with a linear layer in `top_pr/top_pr.py`. If you want to evaluate with [PRDC](https://github.com/clovaai/generative-evaluation-prdc), please refer the metric and install prdc package. 
 ```python
 # Call packages
 import matplotlib.pyplot as plot
 import numpy as np
-from module import mode_drop
+
+# Call mode drop example case
+from top_pr import mode_drop
 
 # Call metrics
-from module.top_pr import top_pr as TopPR
+from top_pr import compute_top_pr as TopPR
+# For comparison to PRDC, use this. 'pip install prdc'
 from prdc import compute_prdc
 ```
 

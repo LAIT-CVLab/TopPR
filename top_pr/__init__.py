@@ -1,2 +1,1 @@
-__version__='0.1'
-from .top_pr import top_pr
+from .top_pr import compute_top_pr
