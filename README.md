@@ -3,7 +3,7 @@
 
 Pumjun Kim, Yoojin Jang, [Jisu Kim](https://jkim82133.github.io/), [Jaejun Yoo](https://scholar.google.co.kr/citations?hl=en&user=7NBlQw4AAAAJ)
 
-[Paper](https://arxiv.org/abs/2306.08013) | Project Page (Coming Soon) | Quick Start: [TopPR](https://github.com/LAIT-CVLab/TopPR#quick-start) | [Colab]()
+[Paper](https://arxiv.org/abs/2306.08013) | Project Page (Coming Soon) | **Quick Start**: [TopPR](https://github.com/LAIT-CVLab/TopPR#quick-start) | [Colab](https://colab.research.google.com/drive/1Fq7L4PEwia3vbIi0kuUcS-2N_SfFFfLc?usp=sharing)
 ### [News]
 * Our **TopP&R** is accepted by **NeurIPS 2023** 🎉!
 ## Abstract
