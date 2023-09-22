@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/LAIT-CVLab/TopPR",
     packages=setuptools.find_packages(),
-    keywords=['toppr', 'evaluation metric', 'topological metric', 'precision and recall']
+    keywords=['toppr', 'evaluation metric', 'topological metric', 'precision and recall'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
