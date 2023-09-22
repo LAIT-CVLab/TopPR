@@ -1,5 +1,7 @@
-# Topological Metrics
-
+# TopP&R: Robust Support Estimation Approach for Evaluating Fidelity and Diversity in Generative Models
+[Paper](https://arxiv.org/abs/2306.08013) | Project Page (Coming Soon)
+### [News]
+Our **TopP&R** is accepted by **NeurIPS 2023** 🎉!
 ## Abstract
 > We propose a robust and reliable evaluation metric for generative models
 called Topological Precision and Recall (TopP&R, pronounced “topper”), which
@@ -171,3 +173,14 @@ for i in range(1,3):
 ```
 Above test code will result in the following figure.
 ![sim](https://user-images.githubusercontent.com/102020840/214467800-e12678d1-96a5-4b92-939b-c2772f1c8023.png)
+
+## Citation
+If you find this repository useful for your research, please cite the following work.
+```
+@article{kim2023topp,
+  title={TopP$\backslash$\&R: Robust Support Estimation Approach for Evaluating Fidelity and Diversity in Generative Models},
+  author={Kim, Pum Jun and Jang, Yoojin and Kim, Jisu and Yoo, Jaejun},
+  journal={arXiv preprint arXiv:2306.08013},
+  year={2023}
+}
+```
