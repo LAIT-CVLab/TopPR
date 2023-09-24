@@ -2,10 +2,17 @@ body {
   font-family: 'Noto Sans', sans-serif;
 }
 
+footer {
+  
+	bottom: 0px;
+  color:white;
+  background-image: linear-gradient(90deg, #020024 0%, #090979 35%, #00d4ff 100%);
+}
 
 .footer .icon-link {
+  
     font-size: 25px;
-    color: #000;
+    color: #fff;
 }
 
 .link-block a {
@@ -13,7 +20,7 @@ body {
     margin-bottom: 5px;
 }
 
-.dnerf {
+.toppr {
   font-variant: small-caps;
 }
 
