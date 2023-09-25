@@ -2,6 +2,11 @@ body {
   font-family: 'Noto Sans', sans-serif;
 }
 
+li {
+  list-style-position: inside;
+  text-indent: -20px;
+}
+
 footer {
   
 	bottom: 0px;

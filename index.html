@@ -59,7 +59,7 @@
               <a href="https://jkim82133.github.io/">Jisu Kim</a><sup>2</sup>,
             </span>
             <span class="author-block">
-              <a href="https://scholar.google.co.kr/citations?hl=en&user=7NBlQw4AAAAJ">Jaejun Yoo</a><sup>1</sup>,
+              <a href="https://scholar.google.co.kr/citations?hl=en&user=7NBlQw4AAAAJ">Jaejun Yoo</a><sup>1</sup>
             </span>
           </div>
 
@@ -181,12 +181,19 @@
     </div>
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Experiment for simultaneous mode dropping</h2>
+        <h2 class="title is-3">Experiments for mode dropping</h2>
         <h3 class="title is-4 has-text-justified">Toy dataset case</h3>
         <div class="content has-text-justified" >
-        <p>Comparison of evaluation metrics for (a) sequential and (b) simultaneous mode-drop scenarios.
-           The horizontal axis shows the concentration ratio on the distribution centered at 
-           <img src="https://latex.codecogs.com/svg.latex?\mu=0"/>.</p>
+        <p>
+        We compare evaluation metrics for (a) sequential and (b) simultaneous mode-drop scenarios.
+          The horizontal axis shows the concentration ratio on the distribution centered at 
+          <img src="https://latex.codecogs.com/svg.latex?\mu=0"/>.
+             We observe that the values of Precision fail to saturate, <img src="https://latex.codecogs.com/svg.latex? i.e.">, mainly smaller than 1, and the Density fluctuates to a value greater than 1, showing their instability and unboundedness. 
+             Recall and GCA do not respond to the simultaneous mode drop, and Coverage decays slowly compared to the reference line. In contrast, TopP performs well, being held at the upper bound of 1 in sequential mode drop, 
+             and TopR also decreases closest to the reference line in simultaneous mode drop.
+
+
+          </p>
       </div>
         <img src="./static/images/figure3.png"
                  class="interpolation-image"
@@ -199,7 +206,19 @@
       <div class="column is-four-fifths">
         <div class="content has-text-justified" >
           <h3 class="title is-4 has-text-justified">Real dataset case</h3>
-        <p>Comparison of evaluation metrics under sequential and simultaneous mode dropping scenario with Baby ImageNet.</p>
+        <p>
+          We have conducted an additional experiment using Baby ImageNet
+           to investigate the sensitivity of TopP&R to mode-drop in real-world data.
+           Since our experiment involves gradually reducing the fixed number of fake
+            samples until nine modes of the fake distribution vanish, the ground truth
+             diversity should decrease linearly.
+             From the experimental results, both D&C and P&R still struggle to respond to
+               simultaneous mode dropping. In contrast, TopP&R consistently exhibit a high
+                level of sensitivity to subtle distribution changes. This notable
+                 capability of TopP&R can be attributed to its direct approximation of the
+                  underlying distribution, distinguishing it from other metrics.
+          
+          </p>
       </div>
         <img src="./static/images/figureA5.png"
                  class="interpolation-image"
@@ -209,12 +228,17 @@
     </div>
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Experiment for evaluating various generative models</h2>
+        <h2 class="title is-3">Experiment for ranking various generative models</h2>
         <div class="content has-text-justified" >
         <p>Generative models trained on CIFAR-10 are ranked by FID, KID and MTD, and F1-scores 
           based on TopP&R, D&C and P&R, respectively. The <img src="https://latex.codecogs.com/svg.latex?\mathcal{X} \; \text{and} \; \mathcal{Y}"> 
           are embedded with InceptionV3, VGG16, and SwAV. The number inside the parenthesis
-           denotes the rank based on each metric.</p>
+           denotes the rank based on each metric.
+          While other metrics exhibit fluctuating rankings, TopP&R consistently provides the most stable and consistent results similar to both FID and KID. 
+          To quantitatively compare the similarity of rankings across varying embedders by different metrics, 
+          we have computed mean Hamming Distance (MHD) where lower value indicates more similarity. 
+          TopP&R, P&R, D&C, and MTD have MHDs of 1.33, 2.66, 3.0, and 3.33, respectively.
+          </p>
       </div>
         <img src="./static/images/table1.png"
                  class="interpolation-image"
@@ -223,6 +247,41 @@
       </div>
     </div>
     <!--/ Paper video. -->
+    <br>
+    <br>
+
+    <div class="columns is-centered ">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified" >
+          <h2 class="title is-3 has-text-justified">References</h2>
+          <ol>
+        <li>Tuomas Kynkäänniemi, Tero Karras, Samuli Laine, Jaakko Lehtinen, and Timo Aila. Improved precision
+and recall metric for assessing generative models. Advances in Neural Information Processing Systems, 32,
+2019.</li>
+        <li>Muhammad Ferjad Naeem, Seong Joon Oh, Youngjung Uh, Yunjey Choi, and Jaejun Yoo. Reliable fidelity
+and diversity metrics for generative models. In International Conference on Machine Learning, pages
+7176–7185. PMLR, 2020.</li>
+          <li>Minguk Kang, Joonghyuk Shin, and Jaesik Park. Studiogan: A taxonomy and benchmark of gans for
+image synthesis. arXiv preprint arXiv:2206.09479, 2022.</li>
+          <li>Serguei Barannikov, Ilya Trofimov, Grigorii Sotnikov, Ekaterina Trimbach, Alexander Korotin, Alexander
+Filippov, and Evgeny Burnaev. Manifold topology divergence: a framework for comparing data manifolds.
+Advances in Neural Information Processing Systems, 34, 2021.</li>
+<li>Petra Poklukar, Anastasiia Varava, and Danica Kragic. Geomca: Geometric evaluation of data
+  representations. In International Conference on Machine Learning, pages 8588–8598. PMLR, 2021.
+  </li>
+  <li>
+    Martin Heusel, Hubert Ramsauer, Thomas Unterthiner, Bernhard Nessler, and Sepp Hochreiter. Gans
+trained by a two time-scale update rule converge to a local nash equilibrium. Advances in neural information
+processing systems, 30, 2017.
+  </li>
+</ol>
+
+
+
+      </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
