@@ -29,7 +29,7 @@ consistency under noisy conditions.
 ## Overview of topological precision and recall (TopP&R)
 ![toppr_overview](https://user-images.githubusercontent.com/102020840/203247514-3f64b9e6-bf74-434e-8c40-c6dfdfec7e59.png)
 The proposed metric TopP&R is defined in the following three steps: (a) Confidence band estimation with bootstrapping in section 2,
-(b) Robust support estimation, and (c) Evaluationn via TopP&R in section 3 of our paper.
+(b) Robust support estimation, and (c) Evaluation via TopP&R in section 3 of our paper.
 
 ## How TopP&R is defined?
 We define the precision and recall of data points as
